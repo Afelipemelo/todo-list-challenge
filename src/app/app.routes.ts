@@ -6,14 +6,13 @@ export const routes: Routes = [
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
   },
   {
-    path: 'message/:id',
-    loadComponent: () =>
-      import('./view-message/view-message.page').then((m) => m.ViewMessagePage),
-  },
-  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
+  },
+  {
+    path: 'category-management',
+    loadComponent: () => import('./pages/category-management/category-management.page').then( m => m.CategoryManagementPage)
   },
 ];
 
