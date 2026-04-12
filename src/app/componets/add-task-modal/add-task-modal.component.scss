@@ -1,0 +1,94 @@
+:host {
+  --bg-deep: #0f172a;
+  --glass-card: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent-primary: #818cf8;
+}
+
+ion-header {
+  ion-toolbar {
+    --background: var(--bg-deep);
+    --color: var(--text-primary);
+    --border-width: 0;
+    border-bottom: 1px solid var(--glass-border);
+
+    ion-title {
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    ion-button {
+      --color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: none;
+    }
+  }
+}
+
+ion-content {
+  --background: var(--bg-deep);
+  --padding-top: 24px;
+}
+
+// Estilo de los contenedores de Input y Select
+.input-group {
+  background: var(--glass-card);
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  margin-bottom: 16px;
+  backdrop-filter: blur(10px);
+  padding: 4px;
+
+  ion-item {
+    --background: transparent;
+    --color: var(--text-primary);
+    --border-width: 0;
+    --highlight-height: 0;
+    --padding-start: 12px;
+
+    ion-input, ion-select {
+      --placeholder-color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    ion-label {
+      color: var(--accent-primary) !important;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+    }
+  }
+}
+
+// Botón de Guardar Neón
+.btn-save {
+  --background: var(--accent-primary);
+  --color: #000;
+  --border-radius: 14px;
+  --box-shadow: 0 8px 20px rgba(129, 140, 248, 0.3);
+  height: 56px;
+  margin-top: 32px;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+
+  &::part(native):active {
+    --background: #a5b4fc;
+  }
+}
+
+ion-select {
+  --placeholder-color: var(--text-secondary);
+  --placeholder-opacity: 0.8;
+  font-weight: 600;
+  color: var(--accent-primary); // Texto violeta neón para el valor seleccionado
+
+  &::part(icon) {
+    color: var(--text-secondary);
+    opacity: 0.6;
+    font-size: 18px;
+  }
+}

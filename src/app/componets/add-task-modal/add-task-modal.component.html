@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-title>Nueva Tarea</ion-title>
     <ion-buttons slot="end">
@@ -8,20 +8,41 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-input label="¿Qué hay que hacer?" labelPlacement="floating" [(ngModel)]="taskTitle"></ion-input>
-  </ion-item>
 
-  <ion-item>
-    <ion-select label="Categoría" labelPlacement="floating" [(ngModel)]="selectedCategoryId">
-      <ion-select-option value="">Sin categoría</ion-select-option>
-      @for (cat of categories; track cat.id) {
-        <ion-select-option [value]="cat.id">{{ cat.name }}</ion-select-option>
-      }
-    </ion-select>
-  </ion-item>
+  <div class="input-group">
+    <ion-item lines="none">
+      <ion-input
+        label="¿Qué hay que hacer?"
+        labelPlacement="floating"
+        [(ngModel)]="taskTitle"
+        placeholder="Ej: Comprar café...">
+      </ion-input>
+    </ion-item>
+  </div>
 
-  <ion-button expand="block" (click)="confirm()" [disabled]="!taskTitle" class="ion-margin-top">
-    Guardar Tarea
+  <div class="input-group">
+    <ion-item lines="none">
+      <ion-select
+        label="Categoría"
+        labelPlacement="floating"
+        [(ngModel)]="selectedCategoryId"
+        toggleIcon="chevron-down-outline"
+        [interfaceOptions]="{ cssClass: 'glass-popover' }"
+        interface="popover">
+        <ion-select-option value="">Sin categoría</ion-select-option>
+        @for (cat of categories; track cat.id) {
+          <ion-select-option [value]="cat.id">{{ cat.name }}</ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
+  </div>
+
+  <ion-button
+    expand="block"
+    (click)="confirm()"
+    [disabled]="!taskTitle.trim()"
+    class="btn-save">
+    CREAR TAREA
   </ion-button>
+
 </ion-content>

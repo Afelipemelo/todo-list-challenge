@@ -20,7 +20,7 @@ bootstrapApplication(AppComponent, {
     provideFirebaseApp(() => initializeApp(environment)),
     provideRemoteConfig(() => {
       const rc = getRemoteConfig();
-      rc.settings.minimumFetchIntervalMillis = 3600000;
+      rc.settings.minimumFetchIntervalMillis = 0;
       return rc;
     }),
     importProvidersFrom(IonicStorageModule.forRoot())

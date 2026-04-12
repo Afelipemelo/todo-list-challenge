@@ -1,40 +1,55 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button defaultHref="/" color="primary"></ion-back-button>
     </ion-buttons>
     <ion-title>Gestionar Categorías</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-item lines="none" class="ion-margin-bottom">
-    <ion-input [(ngModel)]="newCategoryName" placeholder="Nombre de la categoría" label="Nueva:" labelPlacement="floating"></ion-input>
-    <ion-button slot="end" (click)="addCategory()" [disabled]="!newCategoryName.trim()">
+
+  <div class="input-container">
+    <ion-item lines="none">
+      <ion-input
+        [(ngModel)]="newCategoryName"
+        placeholder="Ej: Trabajo, Deporte..."
+        label="Nueva categoría"
+        labelPlacement="floating">
+      </ion-input>
+    </ion-item>
+
+    <ion-button (click)="addCategory()" [disabled]="!newCategoryName.trim()">
       <ion-icon name="add"></ion-icon>
     </ion-button>
-  </ion-item>
+  </div>
 
   <ion-list>
     <ion-list-header>
-      <ion-label>Categorías existentes</ion-label>
+      <ion-label>Categorías</ion-label>
+      <ion-badge [class]="canDelete ? 'badge-active' : 'badge-inactive'" slot="end">
+        {{ canDelete ? 'ELIMINACIÓN ON' : 'ELIMINACIÓN OFF' }}
+      </ion-badge>
     </ion-list-header>
 
     @for (cat of categories; track cat.id) {
       <ion-item-sliding>
-        <ion-item>
-          <ion-icon name="bookmark" slot="start" color="primary"></ion-icon>
+        <ion-item lines="none">
+          <ion-icon name="bookmark" slot="start"></ion-icon>
           <ion-label>{{ cat.name }}</ion-label>
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option color="danger" (click)="removeCategory(cat.id)">
+          <ion-item-option color="danger" (click)="removeCategory(cat.id)" style="border-radius: 0 14px 14px 0;">
             <ion-icon slot="icon-only" name="trash"></ion-icon>
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
     } @empty {
-      <p class="ion-text-center">No hay categorías creadas.</p>
+      <div class="ion-padding ion-text-center" style="margin-top: 40px; opacity: 0.5;">
+        <ion-icon name="folder-open-outline" style="font-size: 3rem; color: var(--text-secondary);"></ion-icon>
+        <p style="color: var(--text-secondary);">No hay categorías creadas.</p>
+      </div>
     }
   </ion-list>
 </ion-content>

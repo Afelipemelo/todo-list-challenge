@@ -5,9 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { Category as CategoryService } from '../../services/category';
 import { Category as CategoryModel} from '../../models/category.model';
 
+
 @Component({
   selector: 'app-add-task-modal',
   templateUrl: './add-task-modal.component.html',
+  styleUrls: ['./add-task-modal.component.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })

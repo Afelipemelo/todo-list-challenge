@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Storage} from '@ionic/storage-angular';
 import { Category as CategoryModel} from '../models/category.model';
+import { RemoteConfig, getValue, fetchAndActivate } from '@angular/fire/remote-config';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ export class Category {
   private _storage: Storage | null = null;
   private CATEGORIES_KEY = 'categories';
 
-  constructor(private storage : Storage){
+  constructor(private storage : Storage, private RemoteConfig : RemoteConfig){
     this.init();
   }
 
@@ -33,5 +34,15 @@ export class Category {
     let categories = await this.getCategories();
     categories = categories.filter(c => c.id !== id);
     await this._storage?.set(this.CATEGORIES_KEY, categories);
+  }
+
+  async getCanDeleteFlag(): Promise<boolean>{
+    try{
+      await fetchAndActivate(this.RemoteConfig);
+      const configValue = getValue(this.RemoteConfig, 'show_delete_category');
+      return configValue.asBoolean();
+    }catch (error){
+      return false
+    }
   }
 }
