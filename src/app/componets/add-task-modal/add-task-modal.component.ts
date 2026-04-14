@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Category as CategoryService } from '../../services/category';
-import { Category as CategoryModel} from '../../models/category.model';
-
+import { CategoryService } from '../../services/category';
+import { Category as CategoryModel } from '../../models/category.model';
 
 @Component({
   selector: 'app-add-task-modal',
@@ -13,6 +12,7 @@ import { Category as CategoryModel} from '../../models/category.model';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
+
 export class AddTaskModalComponent implements OnInit {
   taskTitle: string = '';
   selectedCategoryId: string = '';
@@ -23,20 +23,41 @@ export class AddTaskModalComponent implements OnInit {
     private categoryService: CategoryService
   ) {}
 
+  /**
+   * Inicialización del componente: Carga de categorías de forma segura
+   */
   async ngOnInit() {
-    this.categories = await this.categoryService.getCategories();
+    try {
+      this.categories = await this.categoryService.getCategories();
+    } catch (error) {
+      this.categories = [];
+    }
   }
 
+  /**
+   * Cierra el modal sin retornar datos
+   */
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
 
+  /**
+   * Retorna los datos de la nueva tarea al componente padre
+   */
   confirm() {
-    if (!this.taskTitle.trim()) return;
+    const trimmedTitle = this.taskTitle.trim();
 
-    return this.modalCtrl.dismiss({
-      title: this.taskTitle,
-      categoryId: this.selectedCategoryId
-    }, 'confirm');
+    if (!trimmedTitle) {
+      console.warn(' sin título.');
+      return;
+    }
+
+    // Aseguramos que el objeto de retorno sea limpio
+    const taskData = {
+      title: trimmedTitle,
+      categoryId: this.selectedCategoryId || null // Si no hay categoría, enviamos null
+    };
+
+    return this.modalCtrl.dismiss(taskData, 'confirm');
   }
 }

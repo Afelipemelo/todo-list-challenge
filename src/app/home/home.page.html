@@ -16,11 +16,13 @@
   </div>
 </ion-header>
 
-<ion-content [scrollY]="false">
-  <cdk-virtual-scroll-viewport itemSize="92" minBufferPx="1000" maxBufferPx="2000" class="task-viewport">
+<ion-content [fullscreen]="true">
 
-    <ion-list style="padding-top : 8px">
-      <ion-item-sliding *cdkVirtualFor="let task of filteredTasks; trackBy: trackById">
+  <div class="content-wrapper">
+   <cdk-virtual-scroll-viewport itemSize="92" minBufferPx="1000" maxBufferPx="2000" class="task-viewport">
+    <ion-list style="padding-top: 8px">
+      <ng-container *cdkVirtualFor="let task of filteredTasks; trackBy: trackById">
+      <ion-item-sliding>
         <ion-item lines="none">
           <ion-checkbox slot="start" [(ngModel)]="task.completed" (ionChange)="saveTasks()"></ion-checkbox>
           <ion-label>
@@ -40,16 +42,16 @@
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
+      </ng-container>
     </ion-list>
 
     @if (filteredTasks.length === 0) {
       <div class="ion-padding ion-text-center" style="margin-top: 80px;">
-        <ion-icon name="sparkles-outline" style="font-size: 3.5rem; color: var(--glass-border)"></ion-icon>
         <p style="color: var(--text-secondary); margin-top: 15px;">Todo listo. No hay tareas pendientes.</p>
       </div>
     }
-
   </cdk-virtual-scroll-viewport>
+  </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button routerLink="/category-management" color="secondary">
@@ -57,18 +59,16 @@
     </ion-fab-button>
   </ion-fab>
 
-  @if (showMassiveBtn) {
-    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    @if (showMassiveBtn) {
       <ion-fab-button (click)="generateMassiveTasks()" color="warning">
         <ion-icon name="flask"></ion-icon>
       </ion-fab-button>
-    </ion-fab>
-  } @else {
-    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    } @else {
       <ion-fab-button (click)="openAddTask()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-    </ion-fab>
-  }
+    }
+  </ion-fab>
 
 </ion-content>

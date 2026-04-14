@@ -1,138 +1,174 @@
-
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { IonicModule, ModalController } from '@ionic/angular';
-
+import { IonicModule } from '@ionic/angular';
+import { ModalController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { Category as CateogryModel} from '../models/category.model';
-import { Category as CategoryService } from '../services/category';
-import {ScrollingModule,CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import { AddTaskModalComponent } from '../componets/add-task-modal/add-task-modal.component';
-import { Task as TaskService } from '../services/task';
-import { fetchAndActivate, getRemoteConfig, getValue } from 'firebase/remote-config';
-import { trash, flask, settings, add } from 'ionicons/icons'
+import { ScrollingModule, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
+import { Category as CategoryModel } from '../models/category.model';
+import { CategoryService } from '../services/category';
+import { TaskService } from '../services/task';
+import { AddTaskModalComponent } from '../componets/add-task-modal/add-task-modal.component';
+
+import { fetchAndActivate, RemoteConfig, getValue } from '@angular/fire/remote-config';
+import { trash, flask, settings, add, sparklesOutline, chevronDownOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule, ScrollingModule]
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, ScrollingModule, AddTaskModalComponent, IonicModule],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class HomePage {
+  @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
 
-  @ViewChild(CdkVirtualScrollViewport)  viewport! : CdkVirtualScrollViewport;
-
-  categories: CateogryModel[] = [];
+  categories: CategoryModel[] = [];
   tasks: any[] = [];
   filteredTasks: any[] = [];
   selectedCategory: string = 'all';
-  showMassiveBtn : boolean = false;
+  showMassiveBtn: boolean = false;
 
   constructor(
     private categoryService: CategoryService,
     private modalCtrl: ModalController,
-    private taskService : TaskService
+    private taskService: TaskService,
+    private remoteConfig : RemoteConfig
   ) {
-    addIcons({trash,flask,settings, add})
+    addIcons({ trash, flask, settings, add, sparklesOutline, chevronDownOutline });
   }
 
-  async ngOnInit() {
-  }
-
+  /**
+   * Ciclo de vida de Ionic: Se ejecuta cada vez que la vista entra.
+   * Ideal para refrescar datos tras volver de "Categorías".
+   */
   async ionViewWillEnter() {
-    try{
-      const rc = getRemoteConfig();
+    await this.loadLocalData();
+    this.initRemoteConfig();
+  }
 
-      await fetchAndActivate(rc);
-
-      this.showMassiveBtn = getValue(rc, 'show_massive_load_option').asBoolean();
-
-      this.categories = await this.categoryService.getCategories();
-      this.tasks = await this.taskService.getTasks();
+  /**
+   * Carga inicial de datos desde Storage
+   */
+  async loadLocalData() {
+    try {
+      const [cats, tks] = await Promise.all([
+        this.categoryService.getCategories(),
+        this.taskService.getTasks()
+      ]);
+      this.categories = cats;
+      this.tasks = tks;
       this.applyFilter();
-    }catch(error){
-      this.categories = await this.categoryService.getCategories();
-      this.tasks = await this.taskService.getTasks();
-      this.applyFilter();
+    } catch (e) {
     }
-
   }
 
-  async saveTasks(){
-    await this.taskService.saveTasks(this.tasks)
+  /**
+   * Inicialización segura de Firebase Remote Config
+   */
+  private async initRemoteConfig() {
+    try {
+      await fetchAndActivate(this.remoteConfig);
+      this.showMassiveBtn = getValue(this.remoteConfig, 'show_massive_load_option').asBoolean();
+      this.applyFilter();
+    } catch (error) {
+    }
   }
 
-  async deleteTask( id : string){
+  /**
+   * Persistencia de tareas en Storage
+   */
+  async saveTasks() {
+    await this.taskService.saveTasks(this.tasks);
+  }
+
+  /**
+   * Eliminación de tarea con actualización de vista
+   */
+  async deleteTask(id: string) {
     this.tasks = this.tasks.filter(t => t.id !== id);
     await this.saveTasks();
     this.applyFilter();
   }
 
+  /**
+   * Lógica de filtrado y refresco del Virtual Scroll
+   */
   applyFilter() {
     if (this.selectedCategory === 'all') {
-      this.filteredTasks =[...this.tasks];
+      this.filteredTasks = [...this.tasks];
     } else {
       this.filteredTasks = this.tasks.filter(t => t.categoryId === this.selectedCategory);
     }
 
+    // Forzamos al Virtual Scroll a recalcular tamaños tras el filtro
     setTimeout(() => {
       if (this.viewport) {
         this.viewport.checkViewportSize();
       }
-    }, 100);
+    }, 150);
   }
 
+  /**
+   * Helper para mostrar el nombre de la categoría en el badge
+   */
   getCategoryName(categoryId: string): string {
-  const category = this.categories.find(c => c.id === categoryId);
-  return category ? category.name : 'Sin categoría';
+    const category = this.categories.find(c => c.id === categoryId);
+    return category ? category.name : 'Sin categoría';
   }
 
+  /**
+   * Apertura del modal para nueva tarea
+   */
   async openAddTask() {
-    const modal = await this.modalCtrl.create({
-      component: AddTaskModalComponent,
-      // Propiedades para el look de "Hoja de Cristal"
-      initialBreakpoint: 0.5, // Abre hasta la mitad
-      breakpoints: [0, 0.5, 0.8], // Permite expandirlo o minimizarlo
-      handle: true, // Muestra la barrita superior para arrastrar
-      backdropDismiss: true,
-      cssClass: 'glass-modal' // Clase opcional por si quieres pulir bordes externos
-    });
-    modal.present();
+    setTimeout(async () => {
+      try {
+        const modal = await this.modalCtrl.create({
+          component: AddTaskModalComponent,
+          initialBreakpoint: 0.5,
+          breakpoints: [0, 0.5, 0.8],
+          handle: true,
+          cssClass: 'glass-modal'
+        });
 
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'confirm') {
-      const newTask ={
-        id: Date.now().toString(),
-        title: data.title,
-        categoryId: data.categoryId,
-        completed: false
-    }
-      this.tasks = [newTask, ...this.tasks]
-      await this.saveTasks();
-      this.applyFilter();
-    }
+        await modal.present();
+
+        const { data, role } = await modal.onWillDismiss();
+        if (role === 'confirm' && data) {
+          const newTask = {
+            id: Date.now().toString(),
+            title: data.title,
+            categoryId: data.categoryId,
+            completed: false
+          };
+
+          this.tasks = [newTask, ...this.tasks];
+          await this.saveTasks();
+          this.applyFilter();
+        }
+      } catch (error) {
+        console.error('Error abriendo modal', error);
+      }
+    }, 50);
   }
 
-  generateMassiveTasks(){
-    const massive = Array.from({length : 500}, (_ , i ) => ({
+  generateMassiveTasks() {
+    const massive = Array.from({ length: 500 }, (_, i) => ({
       id: `stress-${Date.now()}-${i}`,
-      title : `Tarea Masiva #${i + 1}`,
-      completed : false,
-      categoryId : ''
-    }))
+      title: `Tarea Masiva #${i + 1}`,
+      completed: false,
+      categoryId: ''
+    }));
 
     this.tasks = [...this.tasks, ...massive];
     this.saveTasks();
     this.applyFilter();
   }
 
-  trackById(index : number, item : any){
+  trackById(index: number, item: any) {
     return item.id;
   }
-
-
-
 }

@@ -30,9 +30,8 @@ ion-header {
 ion-content {
   --background: var(--bg-deep);
   --padding-top: 24px;
+  --overflow: auto;
 }
-
-// Estilo de los contenedores de Input y Select
 .input-group {
   background: var(--glass-card);
   border-radius: 16px;
@@ -48,7 +47,10 @@ ion-content {
     --highlight-height: 0;
     --padding-start: 12px;
 
-    ion-input, ion-select {
+    align-items: center;
+
+    ion-input,
+    ion-select {
       --placeholder-color: var(--text-secondary);
       font-weight: 500;
     }
@@ -62,8 +64,6 @@ ion-content {
     }
   }
 }
-
-// Botón de Guardar Neón
 .btn-save {
   --background: var(--accent-primary);
   --color: #000;
@@ -84,11 +84,41 @@ ion-select {
   --placeholder-color: var(--text-secondary);
   --placeholder-opacity: 0.8;
   font-weight: 600;
-  color: var(--accent-primary); // Texto violeta neón para el valor seleccionado
+  color: var(--accent-primary);
 
   &::part(icon) {
     color: var(--text-secondary);
     opacity: 0.6;
     font-size: 18px;
   }
+}
+
+ion-input {
+  --background: transparent;
+  --color: var(--text-primary);
+  --placeholder-color: var(--text-secondary);
+  font-weight: 500;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+ion-select {
+  --background: transparent;
+  --color: var(--text-primary);
+  --placeholder-color: var(--text-secondary);
+  font-weight: 600;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+ion-select::part(text) {
+  color: var(--text-primary);
+}
+
+ion-select::part(icon) {
+  color: var(--accent-primary);
+  opacity: 0.8;
+  font-size: 18px;
 }

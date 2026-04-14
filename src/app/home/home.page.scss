@@ -1,20 +1,12 @@
-// Home.page.scss
-
 :host {
-  --bg-deep: #0f172a; // Slate oscuro profundo
-  --glass-card: rgba(255, 255, 255, 0.03); // Cristal muy sutil
-  --glass-border: rgba(255, 255, 255, 0.08); // Borde fino
-  --text-primary: #f1f5f9; // Blanco brillante
-  --text-secondary: #94a3b8; // Gris azulado medio
-  --accent-primary: #818cf8; // Violeta eléctrico neón
+  --bg-deep: #0f172a;
+  --glass-card: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent-primary: #818cf8;
 }
 
-ion-content {
- --background: var(--bg-deep);
-  --offset-bottom: 0px !important; // Evita espacios extraños abajo
-}
-
-// 1. HEADER DIFERENTE (Efecto Elevado)
 ion-header {
   background: var(--bg-deep);
   padding: 10px 16px 0;
@@ -24,149 +16,96 @@ ion-header {
     --background: transparent;
     --color: var(--text-primary);
     --border-width: 0;
-    --padding-top: 0;
-    --padding-bottom: 0;
 
     ion-title {
       font-size: 1.8rem;
       font-weight: 800;
       letter-spacing: -1px;
-      padding-inline: 0;
     }
   }
 
   .filter-container {
     background: rgba(255, 255, 255, 0.02);
-  border-radius: 14px; // Bordes suaves
-  margin: 8px 16px 16px 16px;
-  border: 1px solid var(--glass-border);
-  overflow: hidden; // Evita que el item de adentro rompa el borde
+    border-radius: 14px;
+    margin: 8px 16px 16px 16px;
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
 
-  ion-item {
-    --background: transparent;
-    --border-width: 0; // Quita la línea de abajo de Ionic
-    --highlight-height: 0; // Quita la línea azul al hacer focus
-    border: none; // Evita doble borde
-    backdrop-filter: none; // No lo necesita si el contenedor ya lo tiene
-  }
-  }
-}
-
-// Estilo del Toolbar (Transparente)
-ion-toolbar {
-  --background: transparent;
-  --color: var(--text-primary);
-  --border-width: 0;
-  border-bottom: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
-}
-
-ion-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-
-// Estilo de los Items (Glass Cards)
-ion-item-sliding {
- margin: 0 16px 0 16px;
-  border-radius: 14px;
-  height: 76px; // Altura fija del item
-  background: transparent;
-  contain: none; // Permite que las sombras y bordes se vean bien
-}
-
-ion-item {
-  --background: var(--glass-card);
-  --border-radius: 14px;
-  --padding-start: 16px;
-  --inner-padding-end: 16px;
-  height: 100%; // Ocupa todo el sliding
-  border-bottom: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
-}
-
-ion-label {
-  h2 {
-    color: var(--text-bright) !important;
-    font-weight: 600 !important;
-    font-size: 1.1rem !important;
+    ion-item {
+      --color: #ffffff !important;
+      --background: transparent !important;
+      --border-width: 0;
+      --highlight-height: 0;
+    }
   }
 }
 
-// Checkbox personalizado para que encaje
-ion-checkbox {
-  --size: 20px;
-  --checkbox-background-checked: var(--accent-primary);
-  --border-color: rgba(255, 255, 255, 0.2);
-  --border-radius: 6px;
-  margin-inline-end: 12px;
-}
-
-// Badge minimalista
-ion-badge {
-  --padding-top: 3px;
-  --padding-bottom: 3px;
-  font-weight: 600;
-  border-radius: 6px;
-  background: rgba(129, 140, 248, 0.15); // Fondo violeta translúcido
-  color: #c7d2fe; // Texto violeta claro
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-ion-fab {
-  margin-bottom: calc(env(safe-area-inset-bottom) + 15px); // Ajuste para notch de iPhone
-}
-
-// FAB Buttons estilizados
-ion-fab-button {
-  --background: var(--accent-primary);
-  --color: #000; // Texto negro sobre el neón
-  --box-shadow: 0 8px 20px rgba(129, 140, 248, 0.3);
-  --border-radius: 14px; // Cuadrado con puntas redondeadas (como en la azul)
-
-  // Efecto hover/click
-  &::part(native):active {
-    --background: #a5b4fc;
-  }
-
-  &[color="warning"] {
-    --background: #f4c542; // Amarillo de acento
-    --box-shadow: 0 8px 20px rgba(244, 197, 66, 0.3);
-  }
-
-  &[color="secondary"] {
-    --background: #2dd4bf; // Un teal para ajustes
-    --color: #000;
-    --box-shadow: 0 8px 20px rgba(45, 212, 191, 0.3);
-  }
-}
-
-.task-viewport {
+.content-wrapper {
   height: 100%;
-  width: 100%;
-  background: transparent; // Clave para que se vea la página completa
+  display: flex;
+  flex-direction: column;
+}
 
-  // Estilizar la barra de scroll para que sea elegante (opcional)
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: var(--glass-border);
-    border-radius: 10px;
-  }
+cdk-virtual-scroll-viewport {
+  flex: 1;
+  width: 100%;
+  display: block;
 }
 
 ion-list {
- background: transparent;
-padding: 16px 30px 120px 0; // Espacio extra para los FABs
+  background: transparent !important;
+  padding: 16px 30px 120px 0;
 }
 
-ion-select {
-   --placeholder-color: var(--text-secondary);
-  --color: var(--text-primary);
+ion-item-sliding {
+  margin: 16px 16px 0 16px;
+  border-radius: 14px;
+  height: 76px;
+  background: transparent;
+  contain: none;
+}
 
+ion-item {
+  --color: #ffffff !important;
+  --background: var(--glass-card) !important;
+  --border-radius: 14px;
+  backdrop-filter: blur(10px);
+  height: 100%;
+
+  h2 {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+  }
+}
+
+ion-checkbox {
+  --size: 20px;
+  --checkbox-background-checked: var(--accent-primary);
+  --border-radius: 6px;
+}
+
+ion-badge {
   font-weight: 600;
+  border-radius: 6px;
+  background: rgba(129, 140, 248, 0.15);
+  color: #c7d2fe;
+}
+
+ion-fab {
+  z-index: 10;
+}
+
+ion-fab-button {
+  --background: var(--accent-primary) !important;
+  --color: #000 !important;
+  --box-shadow: 0 8px 20px rgba(129, 140, 248, 0.3);
+  --border-radius: 14px;
+
+  &[color="warning"] {
+    --background: #f4c542 !important;
+  }
+
+  &[color="secondary"] {
+    --background: #2dd4bf !important;
+  }
 }

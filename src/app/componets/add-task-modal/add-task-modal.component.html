@@ -7,35 +7,37 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding"  [fullscreen]="true">
 
   <div class="input-group">
-    <ion-item lines="none">
-      <ion-input
-        label="¿Qué hay que hacer?"
-        labelPlacement="floating"
-        [(ngModel)]="taskTitle"
-        placeholder="Ej: Comprar café...">
-      </ion-input>
-    </ion-item>
-  </div>
+  <ion-item lines="none" class="custom-item">
+    <ion-input
+      label="¿Qué hay que hacer?"
+      labelPlacement="floating"
+      fill="outline"
+      [(ngModel)]="taskTitle"
+      placeholder="Ej: Comprar café...">
+    </ion-input>
+  </ion-item>
+</div>
 
-  <div class="input-group">
-    <ion-item lines="none">
-      <ion-select
-        label="Categoría"
-        labelPlacement="floating"
-        [(ngModel)]="selectedCategoryId"
-        toggleIcon="chevron-down-outline"
-        [interfaceOptions]="{ cssClass: 'glass-popover' }"
-        interface="popover">
-        <ion-select-option value="">Sin categoría</ion-select-option>
-        @for (cat of categories; track cat.id) {
+<div class="input-group">
+  <ion-item lines="none" class="custom-item">
+    <ion-select
+      label="Categoría"
+      labelPlacement="floating"
+      fill="outline"
+      [(ngModel)]="selectedCategoryId"
+      toggleIcon="chevron-down-outline"
+      interface="popover">
+      <ion-select-option value="">Sin categoría</ion-select-option>
+       @for (cat of categories; track cat.id) {
           <ion-select-option [value]="cat.id">{{ cat.name }}</ion-select-option>
         }
       </ion-select>
-    </ion-item>
-  </div>
+  </ion-item>
+</div>
+
 
   <ion-button
     expand="block"
