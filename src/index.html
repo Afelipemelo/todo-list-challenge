@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <title>Ionic App</title>
 
-  <base href="/" />
+  <base href="./" />
 
   <meta name="color-scheme" content="light dark" />
   <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -14,13 +14,46 @@
 
   <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
 
-  <!-- add to homescreen for ios -->
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+  <style>
+  html, body, app-root {
+    height: 100% !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
+  ion-fab {
+    width: 56px !important;
+    height: 56px !important;
+    display: block !important;
+    position: fixed !important;
+    z-index: 99999 !important;
+    visibility: visible !important;
+  }
+
+  ion-fab-button {
+    width: 56px !important;
+    height: 56px !important;
+   --background: #818cf8 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+     --color: #000000;
+  }
+
+  ion-content {
+    --height: 100%;
+  display: block;
+  position: relative;
+  --background: var(--background-dark);
+  }
+</style>
 </head>
 
 <body>
   <app-root></app-root>
 </body>
-
 </html>

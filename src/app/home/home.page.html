@@ -1,27 +1,92 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>
-      Inbox
-    </ion-title>
+    <ion-title>Mis Tareas</ion-title>
   </ion-toolbar>
+
+  <div class="filter-container">
+    <ion-item lines="none">
+      <ion-label>Filtrar por:</ion-label>
+      <ion-select [(ngModel)]="selectedCategory" (ionChange)="applyFilter()" interface="popover" toggleIcon="chevron-down-outline" [interfaceOptions]="{ cssClass: 'glass-popover' }" [selectedText]="getSelectedCategoryName()">
+        <ion-select-option value="all">Todas</ion-select-option>
+        @for (cat of categories; track cat.id) {
+          <ion-select-option [value]="cat.id">{{ cat.name }}</ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
+  </div>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
 
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">
-        Inbox
-      </ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="content-wrapper">
+   <cdk-virtual-scroll-viewport itemSize="92" minBufferPx="1000" maxBufferPx="2000" class="task-viewport">
+    <ion-list>
+  @for (task of filteredTasks; track task.id) {
+    <ion-item-sliding>
+      <ion-item>
+        <ion-checkbox slot="start" [(ngModel)]="task.completed" (ionChange)="saveTasks()"></ion-checkbox>
+        <ion-label>
+            <h2>{{ task.title }}</h2>
+          @if (task.categoryId) {
+            <ion-badge color="tertiary">{{ getCategoryName(task.categoryId) }}</ion-badge>
+          }
+        </ion-label>
+      </ion-item>
 
-  <ion-list>
-    @for (message of getMessages(); track message) {
-      <app-message [message]="message"></app-message>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteTask(task.id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  } @empty {
+    <div class="ion-padding ion-text-center">
+      <p>No hay tareas.</p>
+    </div>
+  }
+
+</ion-list>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @if (filteredTasks.length === 0) {
+      <div class="ion-padding ion-text-center" style="margin-top: 80px;">
+        <p style="color: var(--text-secondary); margin-top: 15px;">Todo listo. No hay tareas pendientes.</p>
+      </div>
     }
-  </ion-list>
+  </cdk-virtual-scroll-viewport>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/category-management" color="secondary">
+      <ion-icon name="settings"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    @if (showMassiveBtn) {
+      <ion-fab-button (click)="generateMassiveTasks()" color="warning">
+        <ion-icon name="flask"></ion-icon>
+      </ion-fab-button>
+    } @else {
+      <ion-fab-button (click)="openAddTask()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    }
+  </ion-fab>
+
 </ion-content>

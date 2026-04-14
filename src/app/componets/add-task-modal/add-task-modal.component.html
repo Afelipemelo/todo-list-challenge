@@ -1,0 +1,51 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Nueva Tarea</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Cancelar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding"  [fullscreen]="true">
+
+  <div class="input-group">
+  <ion-item lines="none" class="custom-item">
+    <ion-input
+      label="¿Qué hay que hacer?"
+      labelPlacement="floating"
+      fill="outline"
+      [(ngModel)]="taskTitle"
+      placeholder="Ej: Comprar café...">
+    </ion-input>
+  </ion-item>
+</div>
+
+<div class="input-group">
+  <ion-item lines="none" class="custom-item">
+    <ion-select
+      label="Categoría"
+      labelPlacement="floating"
+      fill="outline"
+      [(ngModel)]="selectedCategoryId"
+      toggleIcon="chevron-down-outline"
+      [selectedText]="getSelectedCategoryName()"
+      interface="popover">
+      <ion-select-option value="">Sin categoría</ion-select-option>
+       @for (cat of categories; track cat.id) {
+          <ion-select-option [value]="cat.id">{{ cat.name }}</ion-select-option>
+        }
+      </ion-select>
+  </ion-item>
+</div>
+
+
+  <ion-button
+    expand="block"
+    (click)="confirm()"
+    [disabled]="!taskTitle.trim()"
+    class="btn-save">
+    CREAR TAREA
+  </ion-button>
+
+</ion-content>

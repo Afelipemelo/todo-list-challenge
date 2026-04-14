@@ -1,0 +1,111 @@
+:host {
+  --bg-deep: #0f172a;
+  --glass-card: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent-primary: #818cf8;
+}
+
+ion-header {
+  background: var(--bg-deep);
+  padding: 10px 16px 0;
+  border-bottom: 1px solid var(--glass-border);
+
+  ion-toolbar {
+    --background: transparent;
+    --color: var(--text-primary);
+    --border-width: 0;
+
+    ion-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+  }
+
+  .filter-container {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 14px;
+    margin: 8px 16px 16px 16px;
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+
+    ion-item {
+      --color: #ffffff !important;
+      --background: transparent !important;
+      --border-width: 0;
+      --highlight-height: 0;
+    }
+  }
+}
+
+.content-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+cdk-virtual-scroll-viewport {
+  flex: 1;
+  width: 100%;
+  display: block;
+}
+
+ion-list {
+  background: transparent !important;
+  padding: 16px 30px 120px 0;
+}
+
+ion-item-sliding {
+  margin: 16px 16px 0 16px;
+  border-radius: 14px;
+  height: 76px;
+  background: transparent;
+  contain: none;
+}
+
+ion-item {
+  --color: #ffffff !important;
+  --background: var(--glass-card) !important;
+  --border-radius: 14px;
+  backdrop-filter: blur(10px);
+  height: 100%;
+
+  h2 {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+  }
+}
+
+ion-checkbox {
+  --size: 20px;
+  --checkbox-background-checked: var(--accent-primary);
+  --border-radius: 6px;
+}
+
+ion-badge {
+  font-weight: 600;
+  border-radius: 6px;
+  background: rgba(129, 140, 248, 0.15);
+  color: #c7d2fe;
+}
+
+ion-fab {
+  z-index: 10;
+}
+
+ion-fab-button {
+  --background: var(--accent-primary) !important;
+  --color: #000 !important;
+  --box-shadow: 0 8px 20px rgba(129, 140, 248, 0.3);
+  --border-radius: 14px;
+
+  &[color="warning"] {
+    --background: #f4c542 !important;
+  }
+
+  &[color="secondary"] {
+    --background: #2dd4bf !important;
+  }
+}
