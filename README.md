@@ -68,5 +68,18 @@ Se integra **Firebase Remote Config** para habilitar dinámicamente funcionalida
 
 ## 5. Funcionalidades Destacadas
 * **Filtros por Categoría:** Segmentación lógica de tareas.
-* **Empty States:** Vistas informativas y amigables cuando no hay datos pendientes.
 * **Arquitectura Limpia:** Separación estricta de responsabilidades entre servicios y componentes.
+
+
+## 5. RTespuestas preguntas
+* **¿Cuáles fueron los principales desafíos que enfrentaste al implementar las nuevas funcionalidades? :** El reto mas grnade fue la compilacion y compatibilidad de todas las librerias ya que te como cambiaar las verisones de angular y jdk para coincidiera con cordova
+
+* **¿Qué técnicas de optimización de rendimiento aplicaste y por qué? :** 
+ 1. Se implemento Virtual Scroll para amnejar grandes cantidades de datos, gracias a esto se mejora el consumo de memorio porque solo renderiza lo que va mostrar
+ 2. Se implemento Lazy Loading para cargar los componentes de forma bajo demanda para reducir el tamaño del paquete incial.
+
+
+* **¿Cómo aseguraste la calidad y mantenibilidad del código? :** 
+  1. Tipado con TypeScript, defini modelos claro para las tareas y categorias para reducir errores en tiempo de ejcucion 
+  2. Separe la logica de negocio (firebase, storage, tareas) en servicios dedicados, esto cumple con el principio de responsabilidad unica
+  3. el proyecto se manejo bajo la arquitectura standalone evitando la complejidad de los modulos 
