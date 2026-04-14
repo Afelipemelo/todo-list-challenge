@@ -41,18 +41,12 @@ export class HomePage {
     addIcons({ trash, flask, settings, add, sparklesOutline, chevronDownOutline });
   }
 
-  /**
-   * Ciclo de vida de Ionic: Se ejecuta cada vez que la vista entra.
-   * Ideal para refrescar datos tras volver de "Categorías".
-   */
+
   async ionViewWillEnter() {
     await this.loadLocalData();
     this.initRemoteConfig();
   }
 
-  /**
-   * Carga inicial de datos desde Storage
-   */
   async loadLocalData() {
     try {
       const [cats, tks] = await Promise.all([
@@ -66,9 +60,7 @@ export class HomePage {
     }
   }
 
-  /**
-   * Inicialización segura de Firebase Remote Config
-   */
+
   private async initRemoteConfig() {
     try {
       await fetchAndActivate(this.remoteConfig);
@@ -78,25 +70,17 @@ export class HomePage {
     }
   }
 
-  /**
-   * Persistencia de tareas en Storage
-   */
   async saveTasks() {
     await this.taskService.saveTasks(this.tasks);
   }
 
-  /**
-   * Eliminación de tarea con actualización de vista
-   */
+
   async deleteTask(id: string) {
     this.tasks = this.tasks.filter(t => t.id !== id);
     await this.saveTasks();
     this.applyFilter();
   }
 
-  /**
-   * Lógica de filtrado y refresco del Virtual Scroll
-   */
   applyFilter() {
     if (this.selectedCategory === 'all') {
       this.filteredTasks = [...this.tasks];
@@ -104,7 +88,6 @@ export class HomePage {
       this.filteredTasks = this.tasks.filter(t => t.categoryId === this.selectedCategory);
     }
 
-    // Forzamos al Virtual Scroll a recalcular tamaños tras el filtro
     setTimeout(() => {
       if (this.viewport) {
         this.viewport.checkViewportSize();
@@ -112,17 +95,11 @@ export class HomePage {
     }, 150);
   }
 
-  /**
-   * Helper para mostrar el nombre de la categoría en el badge
-   */
   getCategoryName(categoryId: string): string {
     const category = this.categories.find(c => c.id === categoryId);
     return category ? category.name : 'Sin categoría';
   }
 
-  /**
-   * Apertura del modal para nueva tarea
-   */
   async openAddTask() {
     setTimeout(async () => {
       try {

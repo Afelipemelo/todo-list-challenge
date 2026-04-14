@@ -25,16 +25,12 @@ export class CategoryManagementPage implements OnInit {
     private tasksService: TaskService,
     private toastCtrl: ToastController
   ) {
-    // Añadimos folderOpenOutline que se usa en el @empty del HTML
     addIcons({ trash, bookmark, add, folderOpenOutline });
   }
 
-  /**
-   * Inicialización de la página: Carga de datos con manejo de errores
-   */
+
   async ngOnInit() {
     try {
-      // Cargamos ambos en paralelo para ganar velocidad
       const [cats, deleteFlag] = await Promise.all([
         this.categoryService.getCategories(),
         this.categoryService.getCanDeleteFlag()
@@ -46,16 +42,12 @@ export class CategoryManagementPage implements OnInit {
     }
   }
 
-  /**
-   * Refresca la lista de categorías desde el storage
-   */
+
   async loadCategories() {
     this.categories = await this.categoryService.getCategories();
   }
 
-  /**
-   * Crea y persiste una nueva categoría
-   */
+
   async addCategory() {
     const trimmedName = this.newCategoryName.trim();
     if (!trimmedName) return;
@@ -71,11 +63,8 @@ export class CategoryManagementPage implements OnInit {
     await this.loadCategories();
   }
 
-  /**
-   * Proceso de eliminación con validaciones de negocio
-   */
+
   async removeCategory(id: string) {
-    // 1. Validar tareas asociadas
     const allTasks = await this.tasksService.getTasks();
     const hasTasks = allTasks.some(t => t.categoryId === id);
 
@@ -84,21 +73,17 @@ export class CategoryManagementPage implements OnInit {
       return;
     }
 
-    // 2. Validar permiso de Remote Config
     if (!this.canDelete) {
       this.showToast('La eliminación de categorías está deshabilitada remotamente.', 'lock-closed');
       return;
     }
 
-    // 3. Proceder con la eliminación
     await this.categoryService.deleteCategory(id);
     await this.loadCategories();
     this.showToast('Categoría eliminada con éxito', 'success');
   }
 
-  /**
-   * Helper centralizado para mostrar notificaciones
-   */
+
   private async showToast(message: string, color: string = 'primary') {
     const toast = await this.toastCtrl.create({
       message,

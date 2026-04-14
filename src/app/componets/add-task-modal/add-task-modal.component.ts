@@ -23,9 +23,7 @@ export class AddTaskModalComponent implements OnInit {
     private categoryService: CategoryService
   ) {}
 
-  /**
-   * Inicialización del componente: Carga de categorías de forma segura
-   */
+
   async ngOnInit() {
     try {
       this.categories = await this.categoryService.getCategories();
@@ -34,16 +32,10 @@ export class AddTaskModalComponent implements OnInit {
     }
   }
 
-  /**
-   * Cierra el modal sin retornar datos
-   */
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
 
-  /**
-   * Retorna los datos de la nueva tarea al componente padre
-   */
   confirm() {
     const trimmedTitle = this.taskTitle.trim();
 
@@ -52,10 +44,9 @@ export class AddTaskModalComponent implements OnInit {
       return;
     }
 
-    // Aseguramos que el objeto de retorno sea limpio
     const taskData = {
       title: trimmedTitle,
-      categoryId: this.selectedCategoryId || null // Si no hay categoría, enviamos null
+      categoryId: this.selectedCategoryId || null
     };
 
     return this.modalCtrl.dismiss(taskData, 'confirm');
