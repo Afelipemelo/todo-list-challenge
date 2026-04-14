@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
 import { IonicModule, ToastController } from '@ionic/angular';
-import { Category as CategoryService} from '../../services/category';
-import { Category as CategoryModel} from '../../models/category.model';
-import { Task } from 'src/app/services/task';
-import { trash, bookmark, add } from 'ionicons/icons'
+import { CategoryService } from '../../services/category';
+import { Category as CategoryModel } from '../../models/category.model';
+import { TaskService } from 'src/app/services/task';
+import { trash, bookmark, add, folderOpenOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-category-management',
@@ -18,31 +18,51 @@ import { trash, bookmark, add } from 'ionicons/icons'
 export class CategoryManagementPage implements OnInit {
   categories: CategoryModel[] = [];
   newCategoryName: string = '';
-  canDelete : boolean = false;
+  canDelete: boolean = false;
 
   constructor(
     private categoryService: CategoryService,
-    private tasks: Task,
+    private tasksService: TaskService,
     private toastCtrl: ToastController
   ) {
-    addIcons({trash,bookmark,add});
+    // Añadimos folderOpenOutline que se usa en el @empty del HTML
+    addIcons({ trash, bookmark, add, folderOpenOutline });
   }
 
+  /**
+   * Inicialización de la página: Carga de datos con manejo de errores
+   */
   async ngOnInit() {
-    await this.loadCategories();
-    this.canDelete = await this.categoryService.getCanDeleteFlag();
+    try {
+      // Cargamos ambos en paralelo para ganar velocidad
+      const [cats, deleteFlag] = await Promise.all([
+        this.categoryService.getCategories(),
+        this.categoryService.getCanDeleteFlag()
+      ]);
+
+      this.categories = cats;
+      this.canDelete = deleteFlag;
+    } catch (error) {
+    }
   }
 
+  /**
+   * Refresca la lista de categorías desde el storage
+   */
   async loadCategories() {
     this.categories = await this.categoryService.getCategories();
   }
 
+  /**
+   * Crea y persiste una nueva categoría
+   */
   async addCategory() {
-    if (!this.newCategoryName.trim()) return
+    const trimmedName = this.newCategoryName.trim();
+    if (!trimmedName) return;
 
     const newCat: CategoryModel = {
       id: Date.now().toString(),
-      name: this.newCategoryName,
+      name: trimmedName,
       color: 'primary'
     };
 
@@ -51,30 +71,41 @@ export class CategoryManagementPage implements OnInit {
     await this.loadCategories();
   }
 
+  /**
+   * Proceso de eliminación con validaciones de negocio
+   */
   async removeCategory(id: string) {
-    let task = await this.tasks.getTasks();
-    task = task.filter(t => t.categoryId == id);
-    if(task.length != 0){
-       const toast = await this.toastCtrl.create({
-        message: 'La cateogria tiene tareas asignadas',
-        duration: 2000,
-        color: 'warning'
-      });
-      toast.present();
-      return
+    // 1. Validar tareas asociadas
+    const allTasks = await this.tasksService.getTasks();
+    const hasTasks = allTasks.some(t => t.categoryId === id);
+
+    if (hasTasks) {
+      this.showToast('No puedes eliminar una categoría con tareas asignadas', 'warning');
+      return;
     }
-    console.log(task)
-    console.log(id)
-    if(!this.canDelete){
-      const toast = await this.toastCtrl.create({
-        message: 'La eliminacion de la categoria esta deshabilitada.',
-        duration: 2000,
-        color: 'warning'
-      });
-      toast.present();
-      return
+
+    // 2. Validar permiso de Remote Config
+    if (!this.canDelete) {
+      this.showToast('La eliminación de categorías está deshabilitada remotamente.', 'lock-closed');
+      return;
     }
+
+    // 3. Proceder con la eliminación
     await this.categoryService.deleteCategory(id);
     await this.loadCategories();
+    this.showToast('Categoría eliminada con éxito', 'success');
+  }
+
+  /**
+   * Helper centralizado para mostrar notificaciones
+   */
+  private async showToast(message: string, color: string = 'primary') {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      color,
+      position: 'bottom'
+    });
+    toast.present();
   }
 }

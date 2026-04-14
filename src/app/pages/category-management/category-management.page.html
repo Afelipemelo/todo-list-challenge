@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding"  [fullscreen]="true">
 
   <div class="input-container">
     <ion-item lines="none">
@@ -47,7 +47,6 @@
       </ion-item-sliding>
     } @empty {
       <div class="ion-padding ion-text-center" style="margin-top: 40px; opacity: 0.5;">
-        <ion-icon name="folder-open-outline" style="font-size: 3rem; color: var(--text-secondary);"></ion-icon>
         <p style="color: var(--text-secondary);">No hay categorías creadas.</p>
       </div>
     }

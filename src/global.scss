@@ -1,93 +1,225 @@
-
 @import "@ionic/angular/css/core.css";
 
-/* Basic CSS for apps built with Ionic */
 @import "@ionic/angular/css/normalize.css";
+
 @import "@ionic/angular/css/structure.css";
+
 @import "@ionic/angular/css/typography.css";
+
 @import "@ionic/angular/css/display.css";
 
-/* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
 
+@import "@ionic/angular/css/float-elements.css";
+
+@import "@ionic/angular/css/text-alignment.css";
+
+@import "@ionic/angular/css/text-transformation.css";
+
+@import "@ionic/angular/css/flex-utils.css";
 
 @import '@ionic/angular/css/palettes/dark.system.css';
 
 
+
+:root {
+
+  --ion-item-color: #f1f5f9;
+
+  --ion-text-color: #f1f5f9;
+
+  --background-dark: #0f172a;
+
+}
+
+html {
+
+  cursor: auto !important;
+
+  user-select: none;
+
+}
+
+
+
+ion-content {
+
+  --height: 100%;
+
+  display: block;
+
+  position: relative;
+
+  --background: var(--background-dark);
+
+}
+
+ion-list {
+  background-color: #22c55e;
+}
+
+
+
+ion-icon {
+
+
+
+  color: var(--ion-text-color) !important;
+
+  fill: currentColor !important;
+
+  visibility: visible !important;
+
+}
+
+
+
+ion-fab-button ion-icon,
+
+ion-button ion-icon {
+
+  color: #000000 !important;
+
+}
+
+
+
+ion-fab {
+
+  z-index: 10;
+
+}
+
+
+
+ion-fab-button {
+
+  --background: #818cf8;
+
+  --color: #000000;
+
+
+
+  &::part(native) {
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+
+  }
+
+}
+
+
+
 .glass-modal {
-  --background: #0f172a;
-  --border-radius: 5px;
+
+  --background: var(--background-dark);
 
   &::part(content) {
-    border: 1px solid rgba(255, 255, 255, 0.08);
 
     backdrop-filter: blur(15px);
 
-    overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 
-    background-clip: padding-box;
   }
 
-  &.modal-sheet {
-    --border-radius: 24px 24px 0 0;
-
-    &::part(content) {
-      border-bottom: none;
-    }
-  }
-}
-
-.popover-viewport {
-  --background: rgba(15, 23, 42, 0.9);
-  backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-:root {
-  --ion-item-color: #f1f5f9;
-  --ion-text-color: #f1f5f9;
 }
 
 
-// 2. FORZAR LAS LETRAS (Aquí es donde está el fallo)
+
 .glass-popover {
 
-  &::part(content) {
-    background: #0f172a !important;
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.08);
-    backdrop-filter: blur(16px);
-  }
-
-  ion-list {
-    background: transparent !important;
-  }
+   --background: #1e2533;
 
   ion-item {
-    --background: transparent !important;
-    --color: #ffffff !important;
-    color: #ffffff !important;
+
+    --background: transparent;
+
+    --color: #ffffff;
+
   }
 
-  ion-radio-group {
-    color: #ffffff !important;
-  }
-
-  ion-label {
-    color: #ffffff !important;
-    opacity: 1 !important;
-  }
-
-  ion-radio {
-    --color: #818cf8;
-    --color-checked: #818cf8;
-  }
 }
 
+
+
+ion-item {
+
+  --background: #1e2533;
+
+  --border-radius: 12px;
+
+  --border-color: #3880ff;
+
+  --border-style: solid;
+
+  --border-width: 1px;
+
+  margin-top: 10px;
+
+  margin-bottom: 10px;
+
+}
+
+ion-select {
+
+  --placeholder-color: #ffffff;
+
+  --placeholder-opacity: 0.8;
+
+  color: #ffffff;
+
+  padding-left: 10px;
+
+  min-height: 50px;
+
+}
+
+
+
+ion-item::part(native) {
+
+  border: none !important;
+
+  background: var(--background);
+
+  border-radius: var(--border-radius);
+
+}
+
+
+
+cdk-virtual-scroll-viewport {
+
+  flex: 1;
+
+  height: 100%;
+
+  width: 100%;
+
+  min-height: 500px;
+
+}
+
+
+
+
+
+.badge-active {
+
+  --background: #22c55e;
+
+  --color: white;
+
+  font-weight: bold;
+
+}
+
+
+
+.badge-inactive {
+
+  --background: #64748b;
+
+  --color: white;
+
+}

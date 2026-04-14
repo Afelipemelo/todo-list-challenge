@@ -9,9 +9,9 @@
 
 ion-content {
   --background: var(--bg-deep);
+  --overflow: auto;
 }
 
-// Header Estilo Glass
 ion-toolbar {
   --background: var(--bg-deep);
   --color: var(--text-primary);
@@ -24,25 +24,29 @@ ion-toolbar {
   }
 }
 
-// Input de Nueva Categoría (Cápsula de Cristal)
 .input-container {
   background: var(--glass-card);
-  border-radius: 16px; // Un poco más redondeado para el look moderno
+  border-radius: 16px;
   border: 1px solid var(--glass-border);
   margin-bottom: 24px;
   backdrop-filter: blur(10px);
-  overflow: hidden; // Vital para que nada se salga de las esquinas
+
+
   display: flex;
   align-items: center;
-  padding-right: 8px; // Espacio para que el botón no toque el borde derecho
+  padding: 4px 8px;
   gap: 8px;
+
   ion-item {
     --background: transparent;
     --color: var(--text-primary);
     --border-width: 0;
+    border-radius: 8px;
     --highlight-height: 0;
     --inner-padding-end: 0;
-    flex: 1; // Toma todo el espacio disponible
+    flex: 1;
+
+    align-items: center;
 
     ion-input {
       --placeholder-color: var(--text-secondary);
@@ -51,28 +55,27 @@ ion-toolbar {
     }
   }
 
-  // BOTÓN CUADRADO REDONDEADO (Como los del Home)
   ion-button {
     --background: var(--accent-primary);
     --color: #000;
-    --border-radius: 12px; // Sincronizado con el estilo de la app
+    --border-radius: 12px;
     --box-shadow: none;
     height: 40px;
     width: 40px;
     margin: 0;
     font-weight: bold;
+    flex-shrink: 0;
 
     ion-icon {
       font-size: 20px;
     }
 
     &::part(native) {
-      padding: 0; // Centra el icono perfectamente
+      padding: 0;
     }
   }
 }
 
-// Lista de Categorías
 ion-list {
   background: transparent;
 
@@ -115,7 +118,6 @@ ion-item {
   }
 }
 
-// Badge de Estado (Firebase)
 ion-badge {
   padding: 6px 10px;
   border-radius: 8px;
