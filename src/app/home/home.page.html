@@ -6,7 +6,7 @@
   <div class="filter-container">
     <ion-item lines="none">
       <ion-label>Filtrar por:</ion-label>
-      <ion-select [(ngModel)]="selectedCategory" (ionChange)="applyFilter()" interface="popover" toggleIcon="chevron-down-outline" [interfaceOptions]="{ cssClass: 'glass-popover' }">
+      <ion-select [(ngModel)]="selectedCategory" (ionChange)="applyFilter()" interface="popover" toggleIcon="chevron-down-outline" [interfaceOptions]="{ cssClass: 'glass-popover' }" [selectedText]="getSelectedCategoryName()">
         <ion-select-option value="all">Todas</ion-select-option>
         @for (cat of categories; track cat.id) {
           <ion-select-option [value]="cat.id">{{ cat.name }}</ion-select-option>
@@ -20,30 +20,48 @@
 
   <div class="content-wrapper">
    <cdk-virtual-scroll-viewport itemSize="92" minBufferPx="1000" maxBufferPx="2000" class="task-viewport">
-    <ion-list style="padding-top: 8px">
-      <ng-container *cdkVirtualFor="let task of filteredTasks; trackBy: trackById">
-      <ion-item-sliding>
-        <ion-item lines="none">
-          <ion-checkbox slot="start" [(ngModel)]="task.completed" (ionChange)="saveTasks()"></ion-checkbox>
-          <ion-label>
-            <h2 [style.text-decoration]="task.completed ? 'line-through' : 'none'"
-                [style.opacity]="task.completed ? '0.4' : '1'">
-              {{ task.title }}
-            </h2>
-            @if (task.categoryId) {
-              <ion-badge lines="none">{{ getCategoryName(task.categoryId) }}</ion-badge>
-            }
-          </ion-label>
-        </ion-item>
+    <ion-list>
+  @for (task of filteredTasks; track task.id) {
+    <ion-item-sliding>
+      <ion-item>
+        <ion-checkbox slot="start" [(ngModel)]="task.completed" (ionChange)="saveTasks()"></ion-checkbox>
+        <ion-label>
+            <h2>{{ task.title }}</h2>
+          @if (task.categoryId) {
+            <ion-badge color="tertiary">{{ getCategoryName(task.categoryId) }}</ion-badge>
+          }
+        </ion-label>
+      </ion-item>
 
-        <ion-item-options side="end">
-          <ion-item-option color="danger" (click)="deleteTask(task.id)" style="border-radius: 0 14px 14px 0;">
-            <ion-icon slot="icon-only" name="trash"></ion-icon>
-          </ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
-      </ng-container>
-    </ion-list>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteTask(task.id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  } @empty {
+    <div class="ion-padding ion-text-center">
+      <p>No hay tareas.</p>
+    </div>
+  }
+
+</ion-list>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @if (filteredTasks.length === 0) {
       <div class="ion-padding ion-text-center" style="margin-top: 80px;">

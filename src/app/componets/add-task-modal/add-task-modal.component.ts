@@ -51,4 +51,9 @@ export class AddTaskModalComponent implements OnInit {
 
     return this.modalCtrl.dismiss(taskData, 'confirm');
   }
+
+  getSelectedCategoryName(): string {
+  const category = this.categories.find(c => c.id === this.selectedCategoryId);
+  return category ? category.name : 'Sin categoría';
+}
 }

@@ -148,4 +148,10 @@ export class HomePage {
   trackById(index: number, item: any) {
     return item.id;
   }
+  getSelectedCategoryName(): string {
+  if (this.selectedCategory === 'all') return 'Todas';
+
+  const category = this.categories.find(c => c.id === this.selectedCategory);
+  return category ? category.name : 'Todas';
+}
 }

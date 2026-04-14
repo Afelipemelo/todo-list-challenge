@@ -74,7 +74,7 @@ export class CategoryManagementPage implements OnInit {
     }
 
     if (!this.canDelete) {
-      this.showToast('La eliminación de categorías está deshabilitada remotamente.', 'lock-closed');
+      this.showToast('La eliminación de categorías está deshabilitada remotamente.', 'warning');
       return;
     }
 
@@ -93,4 +93,5 @@ export class CategoryManagementPage implements OnInit {
     });
     toast.present();
   }
+
 }

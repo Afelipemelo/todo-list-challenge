@@ -29,6 +29,7 @@
       fill="outline"
       [(ngModel)]="selectedCategoryId"
       toggleIcon="chevron-down-outline"
+      [selectedText]="getSelectedCategoryName()"
       interface="popover">
       <ion-select-option value="">Sin categoría</ion-select-option>
        @for (cat of categories; track cat.id) {

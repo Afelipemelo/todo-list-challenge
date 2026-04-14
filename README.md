@@ -1,58 +1,72 @@
-# 📝 Task Manager - Deep Glass Edition
+# 📝 Todo-List Challenge - Accenture
 
-Una aplicación de gestión de tareas de alto rendimiento construida con **Ionic 8+** y **Angular**.
+## 1. Presentación
+Esta aplicación es una solución para la gestión de tareas, desarrollada como parte del proceso de evaluación técnica para **Accenture**. El proyecto se centra en la implementacion una arquitectura **Standalone**  y persistencia de datos local y remota.
 
-## ✨ Características Principales
+---
 
+## 2. Stack Tecnológico
+Se optó por utilizar las versiones que aseguraran la compatibilidad de dependendicas.
 
-* **Virtual Scroll :** Implementación de `@angular/cdk/scrolling` para garantizar una navegación fluida incluso con miles de tareas, optimizando el uso de memoria y CPU.
-* **UI Adaptativa (Adaptive Layout):** El sistema detecta la plataforma automáticamente; muestra *Sheet Modals* nativos en dispositivos móviles y diálogos elegantes centrados en escritorio.
-* **Gestión de Categorías:** Sistema de organización dinámico que permite clasificar tareas y filtrar la vista principal en tiempo real.
+* **Framework Frontend:** Angular 18 (Arquitectura Standalone)
+* **Framework Móvil:** Ionic 8 / Capacitor 6
+* **Entorno de Ejecución:** Node.js v18.20.0
+* **Persistencia Local:** Capacitor Storage / SQLite
+* **Servicios Cloud:** Firebase (Remote Config para Feature Flagging)
+* **Java JDK:**  Java JDK 17
+* **Rendimiento:** Angular CDK (Virtual Scrolling)
 
-## 🛠️ Stack Tecnológico
+---
 
-* **Framework:** [Ionic Framework 8+](https://ionicframework.com/)
-* **Core:** [Angular](https://angular.io/) (Standalone Components)
-* **Scrolling:** CDK Virtual Scroll.
-* **Estilos:** SCSS avanzado con variables CSS dinámicas y Shadow Parts.
+## 3. Despliegue y Ejecución
 
-## 🎨 Design System
+### Requisitos Previos
+* Node.js instalado (v18+)
+* Ionic CLI instalado (`npm install -g @ionic/cli`)
+* Android Studio (para pruebas en APK)
 
-El corazón de la aplicación es su identidad visual coherente en cada componente:
-
-| Elemento | Propiedad / Valor |
-| :--- | :--- |
-| **Fondo Base** | `#0f172a` (Deep Slate) |
-| **Tarjetas (Cards)** | `rgba(255, 255, 255, 0.03)` |
-| **Bordes de Cristal** | `rgba(255, 255, 255, 0.08)` |
-| **Radio de Bordes** | `14px` / `16px` (Bento Style) |
-| **Tipografía** | Inter / System Default (Font-weight: 500, 800) |
-
-## 🚀 Instalación y Configuración
-
-1.  **Clonación del proyecto:**
-    ```bash
-    git clone [https://github.com/tu-usuario/task-manager.git](https://github.com/tu-usuario/task-manager.git)
-    cd task-manager
-    ```
-
-2.  **Instalación de dependencias:**
+### Instalación y Ejecución en Web
+1.  Clonar el repositorio.
+2.  Instalar dependencias:
     ```bash
     npm install
     ```
-
-3.  **Lanzamiento en entorno local:**
+3.  Ejecutar en el navegador:
     ```bash
     ionic serve
     ```
 
-## 🏗️ Estructura del Proyecto
-
-* `home/`: Vista principal con lógica de filtrado y scroll infinito.
-* `category-management/`: Interfaz para la administración de etiquetas.
-* `components/add-task-modal/`: Componente de entrada de datos con diseño adaptativo.
-* `global.scss`: Definiciones maestras del efecto Glass y personalización de componentes nativos (Popovers, Modals).
+### Despliegue en Android
+Para generar y probar la versión nativa:
+1.  Generar build de producción:
+    ```bash
+    npx ng build --configuration production
+    ```
+2.  Sincronizar con Capacitor:
+    ```bash
+    npx cap sync android
+    ```
+3.  Abrir en Android Studio:
+    ```bash
+    npx cap open android
+    ```
 
 ---
 
-Desarrollado con ❤️ por **Andres Melo**
+## 4. Puntos Abordados y Soluciones Técnicas
+
+### ✅ Gestión Masiva de Datos (Virtual Scroll)
+Se implementó `cdk-virtual-scroll-viewport` para manejar grandes listas de datos.
+
+### ✅ Persistencia y Sincronización
+La aplicación utiliza un servicio de almacenamiento local mediante `Ionic Storage` que garantiza que la informacion tras cerrar la aplicación.
+
+### ✅ Firebase Remote Config
+Se integra **Firebase Remote Config** para habilitar dinámicamente funcionalidades desde la consola de Firebase (Feature Flagging).
+
+---
+
+## 5. Funcionalidades Destacadas
+* **Filtros por Categoría:** Segmentación lógica de tareas.
+* **Empty States:** Vistas informativas y amigables cuando no hay datos pendientes.
+* **Arquitectura Limpia:** Separación estricta de responsabilidades entre servicios y componentes.
